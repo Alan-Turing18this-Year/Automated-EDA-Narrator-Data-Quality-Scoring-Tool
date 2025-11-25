@@ -54,7 +54,29 @@ The project demonstrates **object-oriented programming (OOP)** concepts includin
 
 ## 5. Project Structure
 
+data-narrator/
+├─ data/ # example CSV files
+├─ src/
+│ ├─ cli.py # command-line interface
+│ ├─ orchestrator.py # DatasetPipeline
+│ ├─ loader.py
+│ ├─ preprocessor.py
+│ ├─ eda_analyzer.py
+│ ├─ quality_scorer.py
+│ ├─ narrator.py
+│ └─ report_builder.py
+├─ tests/
+├─ notebooks/
+├─ requirements.txt
+└─ README.md
 
+---
+
+| Requirement                                  | Project Implementation                                                                                                                                                                                                                                                                                      |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **At least 5 useful methods across modules** | Example methods: <br>1. `DataLoader.load()` – loads CSV <br>2. `Preprocessor.trim_strings()` – trims text columns <br>3. `NumericAnalyzer.run_all()` – numeric summary <br>4. `QualityScorer.overall_score()` – calculates weighted quality <br>5. `Narrator.generate()` – returns human-readable narrative |
+| **Must be importable and reusable**          | All modules are in `src/` with proper `__init__.py`, allowing imports like: <br>`from src.loader import DataLoader`                                                                                                                                                                                         |
+---
 
 # Dataset Facade UML
 
