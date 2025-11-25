@@ -25,7 +25,7 @@ class QualityScorer:
         self.scores['duplicates'] = round(float(score), 2)
         return self.scores['duplicates']
 
-    def outlier_score(self):
+    def outliers_score(self):
         out = self.eda.get('outliers', {})
         if not out:
             score = 100.0
@@ -35,6 +35,7 @@ class QualityScorer:
             score = max(0, 100 - pct * 1.5)
         self.scores['outliers'] = round(float(score), 2)
         return self.scores['outliers']
+
 
     def balance_score(self):
         # simple heuristic: if any categorical pct > 90% penalise
