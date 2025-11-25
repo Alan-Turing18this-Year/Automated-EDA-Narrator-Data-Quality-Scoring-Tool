@@ -1,42 +1,39 @@
-# Dataset class (facade/orchestrator)
-# src/orchestrator.py
-from loader import DataLoader
-from preprocessor import Preprocessor
-from eda_analyzer import EDAAnalyzer
-from quality_scorer import QualityScorer
-from narrator import Narrator
-from report_builder import ReportBuilder
+# src/quality_scorer.py
 
-class DatasetPipeline:
-    def __init__(self, path):
-        self.loader = DataLoader(path)
-        self.df = None
-        self.pre = None
-        self.eda = None
-        self.scores = None
-        self.narrative = None
-        self.report = None
+import pandas as pd
 
-    def run(self):
-        self.df = self.loader.load()
-        # basic preprocessing
-        self.pre = Preprocessor(self.df).trim_strings(self.df.select_dtypes(include=['object']).columns.tolist())
-        clean_df = self.pre.get()
-        # analysis
-        analyzer = EDAAnalyzer(clean_df)
-        eda_results = analyzer.run_all()
-        # scoring
-        scorer = QualityScorer(eda_results, df_len=len(clean_df))
-        scorer.overall_score()
-        scores = scorer.scores
-        # narration
-        narrator = Narrator(eda_results, scores)
-        narrative = narrator.generate()
-        # report
-        builder = ReportBuilder(narrative, eda_results, scores)
-        md = builder.to_markdown()
+class QualityScorer:
+    def __init__(self, eda_results, df_len):
         self.eda = eda_results
-        self.scores = scores
-        self.narrative = narrative
-        self.report = md
-        return md
+        self.df_len = df_len
+        self.scores = {}
+
+    # Example scoring methods
+    def missing_score(self):
+        missing_count = self.eda['missing'].sum()
+        total = self.df_len * len(self.eda['missing'])
+        score = max(0, 100 - (missing_count / total * 100))
+        self.scores['missing'] = round(score, 2)
+
+    def duplicates_score(self):  # RENAMED from duplicate_score -> duplicates_score
+        duplicate_count = self.eda['duplicates']
+        score = max(0, 100 - (duplicate_count / self.df_len * 100))
+        self.scores['duplicates'] = round(score, 2)
+
+    def outliers_score(self):
+        outliers_count = self.eda['outliers'].sum()
+        total = self.df_len * len(self.eda['outliers'])
+        score = max(0, 100 - (outliers_count / total * 100))
+        self.scores['outliers'] = round(score, 2)
+
+    def balance_score(self):
+        # Simplified example: give full score
+        self.scores['balance'] = 90.0
+
+    def overall_score(self):
+        # Loop over all metrics and call corresponding methods
+        for k in ['missing', 'duplicates', 'outliers', 'balance']:
+            getattr(self, f"{k}_score")()
+        # Calculate overall
+        overall = sum(self.scores.values()) / len(self.scores)
+        self.scores['overall'] = round(overall, 2)
