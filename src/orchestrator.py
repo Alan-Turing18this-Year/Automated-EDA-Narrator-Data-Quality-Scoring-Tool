@@ -1,1 +1,1 @@
-# EDAAnalyzer
+# Dataset class (facade/orchestrator)
