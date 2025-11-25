@@ -1,50 +1,45 @@
-%%writefile src/orchestrator.py
+# Composition + dunder method
 from loader import DataLoader
 from preprocessor import Preprocessor
-from eda_analyzer import EDAAnalyzer
+from eda_analyzer import NumericAnalyzer, CategoricalAnalyzer
 from quality_scorer import QualityScorer
 from narrator import Narrator
 from report_builder import ReportBuilder
 
 class DatasetPipeline:
     def __init__(self, path):
-        self.path = path       # CSV file path
-        self.df = None         # DataFrame
-        self.pre = None
-        self.eda = None
+        self.loader = DataLoader(path)       # composition
+        self.preprocessor = None
+        self.analyzer = None
+        self.eda_results = None
         self.scores = None
         self.narrative = None
         self.report = None
 
     def run(self):
-        # Load data
-        self.df = DataLoader(self.path).load()
+        df = self.loader.load()
+        self.preprocessor = Preprocessor(df).trim_strings(df.select_dtypes(include='object').columns.tolist())
+        df_clean = self.preprocessor.get_df()
 
-        # Preprocessing
-        self.pre = Preprocessor(self.df).trim_strings(self.df.select_dtypes(include=['object']).columns.tolist())
-        clean_df = self.pre.get()
+        # Numeric + categorical analysis (inheritance + polymorphism)
+        num_analyzer = NumericAnalyzer(df_clean)
+        cat_analyzer = CategoricalAnalyzer(df_clean)
+        self.eda_results = {**num_analyzer.run_all(), **cat_analyzer.run_all()}
 
-        # EDA
-        analyzer = EDAAnalyzer(clean_df)
-        eda_results = analyzer.run_all()
-
-        # Scoring
-        scorer = QualityScorer(eda_results, df_len=len(clean_df))
+        # scoring
+        scorer = QualityScorer(self.eda_results, df_len=len(df_clean))
         scorer.overall_score()
-        scores = scorer.scores
+        self.scores = scorer.scores
 
-        # Narration
-        narrator = Narrator(eda_results, scores)
-        narrative = narrator.generate()
+        # narration
+        narrator = Narrator(self.eda_results, self.scores)
+        self.narrative = narrator.generate()
 
-        # Report
-        builder = ReportBuilder(narrative, eda_results, scores)
-        md = builder.to_markdown()
+        # report
+        builder = ReportBuilder(self.narrative, self.scores, self.eda_results)
+        self.report = builder.to_markdown()
+        return self.report
 
-        # Save internal state
-        self.eda = eda_results
-        self.scores = scores
-        self.narrative = narrative
-        self.report = md
-
-        return md
+    # dunder method
+    def __repr__(self):
+        return f"<DatasetPipeline loader={repr(self.loader)}>"
