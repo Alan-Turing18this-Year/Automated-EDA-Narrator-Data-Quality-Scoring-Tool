@@ -1,10 +1,31 @@
 # Composition + narrative
 class Narrator:
+    """
+    Generates human-readable narratives from EDA and quality scores.
+
+    Attributes:
+        _eda (dict): EDA results.
+        _scores (dict): Data quality scores.
+    """
+
     def __init__(self, eda_results, scores):
+        """
+        Initialize Narrator.
+
+        Args:
+            eda_results (dict): EDA analysis results.
+            scores (dict): Data quality scores.
+        """
         self._eda = eda_results
         self._scores = scores
 
     def generate(self):
+        """
+        Generate narrative text based on data analysis and scores.
+
+        Returns:
+            list: List of narrative strings.
+        """
         text = []
         # summary
         for col, metrics in self._eda.get('summary', {}).items():
