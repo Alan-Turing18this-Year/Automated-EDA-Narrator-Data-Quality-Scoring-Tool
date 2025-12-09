@@ -1,4 +1,6 @@
-![DatasetSense Logo](pics/Datasetsense_logo.png)
+<p align="center">
+  <img src="pics/Datasetsense_logo.png" alt="DatasetSense Logo">
+</p>
 
 # Automated-EDA-Narrator-Data-Quality-Scoring-Tool
 # DatasetSense: Automated EDA Narrator + Data Quality Scoring Tool
