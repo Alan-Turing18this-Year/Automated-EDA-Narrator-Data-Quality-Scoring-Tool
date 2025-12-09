@@ -26,7 +26,7 @@ class Preprocessor:
         Args:
             df (pd.DataFrame): The input DataFrame to preprocess.
         """
-        self._df = df.copy()
+        self._df = df.copy()        # protected
 
     def trim_strings(self, cols):
         """
