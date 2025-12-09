@@ -1,11 +1,11 @@
 # Composition + dunder method
 # src/orchestrator.py
-from loader import DataLoader
-from preprocessor import Preprocessor
-from eda_analyzer import NumericAnalyzer, CategoricalAnalyzer
-from quality_scorer import QualityScorer
-from narrator import Narrator
-from report_builder import ReportBuilder
+from src.loader import DataLoader
+from src.preprocessor import Preprocessor
+from src.eda_analyzer import NumericAnalyzer, CategoricalAnalyzer
+from src.quality_scorer import QualityScorer
+from src.narrator import Narrator
+from src.report_builder import ReportBuilder
 
 class DatasetPipeline:
     """
@@ -59,7 +59,18 @@ class DatasetPipeline:
         # Numeric and categorical analysis
         num_analyzer = NumericAnalyzer(df_clean)
         cat_analyzer = CategoricalAnalyzer(df_clean)
-        self.eda_results = {**num_analyzer.run_all(), **cat_analyzer.run_all()}
+        
+        # Get results from both analyzers
+        num_results = num_analyzer.run_all()
+        cat_results = cat_analyzer.run_all()
+        
+        # Merge results properly - combine missing values from both
+        self.eda_results = {
+            'summary': {**num_results.get('summary', {}), **cat_results.get('summary', {})},
+            'missing': {**num_results.get('missing', {}), **cat_results.get('missing', {})},
+            'outliers': num_results.get('outliers', {}),
+            'duplicates': num_results.get('duplicates', 0)
+        }
 
         # Data quality scoring
         scorer = QualityScorer(self.eda_results, df_len=len(df_clean))
@@ -83,4 +94,3 @@ class DatasetPipeline:
             str: Representation including the loader information.
         """
         return f"<DatasetPipeline loader={repr(self.loader)}>"
-

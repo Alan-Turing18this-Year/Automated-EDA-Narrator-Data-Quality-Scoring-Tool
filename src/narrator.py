@@ -38,7 +38,7 @@ class Narrator:
 
         # Summary statistics
         for col, metrics in self._eda.get('summary', {}).items():
-            if 'mean' in metrics:
+            if isinstance(metrics, dict) and 'mean' in metrics and 'std' in metrics:
                 text.append(
                     f"Column '{col}' has mean {metrics['mean']:.2f} "
                     f"and standard deviation {metrics['std']:.2f}."
@@ -67,8 +67,7 @@ class Narrator:
         )
 
         text.append(
-            f"Overall data quality score is {overall:.2f}/100 — {verdict}."
+            f"Overall data quality: {overall:.2f}/100 - {verdict}."
         )
 
         return text
-
