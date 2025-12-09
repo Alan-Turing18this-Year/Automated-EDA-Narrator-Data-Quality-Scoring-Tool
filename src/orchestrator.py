@@ -1,11 +1,11 @@
 # Composition + dunder method
 # src/orchestrator.py
-from src.loader import DataLoader
-from src.preprocessor import Preprocessor
-from src.eda_analyzer import NumericAnalyzer, CategoricalAnalyzer
-from src.quality_scorer import QualityScorer
-from src.narrator import Narrator
-from src.report_builder import ReportBuilder
+from loader import DataLoader
+from preprocessor import Preprocessor
+from eda_analyzer import NumericAnalyzer, CategoricalAnalyzer
+from quality_scorer import QualityScorer
+from narrator import Narrator
+from report_builder import ReportBuilder
 
 class DatasetPipeline:
     """
@@ -23,14 +23,18 @@ class DatasetPipeline:
         scores (dict): Stores calculated quality scores.
         narrative (list): Stores generated narrative insights.
         report (str): Final Markdown report string.
+        custom_weights (dict): Custom weights for quality scoring (optional).
     """
 
-    def __init__(self, path):
+    def __init__(self, path, custom_weights=None):
         """
         Initialize DatasetPipeline with path to CSV data.
 
         Args:
             path (str): Path to the CSV file to analyze.
+            custom_weights (dict, optional): Custom weights for quality scoring.
+                Must contain keys: 'missing', 'duplicates', 'outliers', 'balance'.
+                Values must sum to 1.0. Defaults to None (uses default weights).
         """
         self.loader = DataLoader(path)
         self.preprocessor = None
@@ -39,6 +43,7 @@ class DatasetPipeline:
         self.scores = None
         self.narrative = None
         self.report = None
+        self.custom_weights = custom_weights
 
     def run(self):
         """
@@ -72,8 +77,12 @@ class DatasetPipeline:
             'duplicates': num_results.get('duplicates', 0)
         }
 
-        # Data quality scoring
-        scorer = QualityScorer(self.eda_results, df_len=len(df_clean))
+        # Data quality scoring with custom weights if provided
+        scorer = QualityScorer(
+            self.eda_results, 
+            df_len=len(df_clean),
+            custom_weights=self.custom_weights
+        )
         scorer.overall_score()
         self.scores = scorer.scores
 
@@ -81,8 +90,13 @@ class DatasetPipeline:
         narrator = Narrator(self.eda_results, self.scores)
         self.narrative = narrator.generate()
 
-        # Build Markdown report
-        builder = ReportBuilder(self.narrative, self.scores, self.eda_results)
+        # Build Markdown report (pass weights info)
+        builder = ReportBuilder(
+            self.narrative, 
+            self.scores, 
+            self.eda_results,
+            weights=scorer.get_weights()
+        )
         self.report = builder.to_markdown()
         return self.report
 
