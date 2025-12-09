@@ -46,13 +46,43 @@ class NumericAnalyzer(EDAAnalyzer):
 
     def run_all(self):
         """
-        Generate summary statistics for numeric columns.
+        Generate summary statistics for numeric columns including:
+        - Summary statistics (mean, std, min, max, etc.)
+        - Missing value counts and percentages
+        - Outlier detection using IQR method
+        - Duplicate row count
 
         Returns:
-            dict: Dictionary containing summary statistics for numeric columns.
+            dict: Dictionary containing comprehensive numeric analysis.
         """
         num = self._df.select_dtypes(include=[np.number])
+        
+        # Summary statistics
         self.results['summary'] = num.describe().to_dict()
+        
+        # Missing values analysis
+        self.results['missing'] = {}
+        for col in num.columns:
+            missing_count = num[col].isna().sum()
+            self.results['missing'][col] = {
+                'missing': int(missing_count),
+                'pct': round((missing_count / len(self._df)) * 100, 2)
+            }
+        
+        # Outlier detection using IQR method
+        self.results['outliers'] = {}
+        for col in num.columns:
+            Q1 = num[col].quantile(0.25)
+            Q3 = num[col].quantile(0.75)
+            IQR = Q3 - Q1
+            lower_bound = Q1 - 1.5 * IQR
+            upper_bound = Q3 + 1.5 * IQR
+            outliers = ((num[col] < lower_bound) | (num[col] > upper_bound)).sum()
+            self.results['outliers'][col] = int(outliers)
+        
+        # Duplicate rows count
+        self.results['duplicates'] = int(self._df.duplicated().sum())
+        
         return self.results
 
 
@@ -63,13 +93,29 @@ class CategoricalAnalyzer(EDAAnalyzer):
 
     def run_all(self):
         """
-        Generate summary statistics for categorical columns.
+        Generate summary statistics for categorical columns including:
+        - Summary statistics (count, unique, top, freq)
+        - Missing value counts and percentages
 
         Returns:
-            dict: Dictionary containing summary statistics for categorical columns.
+            dict: Dictionary containing comprehensive categorical analysis.
         """
         cat = self._df.select_dtypes(include=['object'])
-        self.results['summary'] = cat.describe(include='all').to_dict()
+        
+        # Summary statistics for categorical columns
+        if not cat.empty:
+            self.results['summary'] = cat.describe(include='all').to_dict()
+            
+            # Missing values analysis for categorical columns
+            self.results['missing'] = {}
+            for col in cat.columns:
+                missing_count = cat[col].isna().sum()
+                self.results['missing'][col] = {
+                    'missing': int(missing_count),
+                    'pct': round((missing_count / len(self._df)) * 100, 2)
+                }
+        else:
+            self.results['summary'] = {}
+            self.results['missing'] = {}
+        
         return self.results
-
-
