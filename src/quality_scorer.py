@@ -21,20 +21,107 @@ class QualityScorer:
     Attributes:
         _eda (dict): Protected dictionary of EDA results (missing, duplicates, outliers).
         _df_len (int): Number of rows in the dataset.
+        _weights (dict): User-defined weights for each metric in overall score calculation.
         scores (dict): Stores individual metric scores and final overall score.
     """
 
-    def __init__(self, eda_results, df_len):
+    # Default weights as a class variable
+    DEFAULT_WEIGHTS = {
+        'missing': 0.35,
+        'duplicates': 0.15,
+        'outliers': 0.25,
+        'balance': 0.25
+    }
+
+    def __init__(self, eda_results, df_len, weights=None):
         """
         Initialize the QualityScorer with EDA results and dataset length.
 
         Args:
             eda_results (dict): Output dictionary from the EDAAnalyzer modules.
             df_len (int): Total number of rows in the dataset.
+            weights (dict, optional): Custom weights for metrics. 
+                Keys: 'missing', 'duplicates', 'outliers', 'balance'
+                Values must sum to 1.0. Defaults to None (uses default weights).
+        
+        Raises:
+            ValueError: If custom weights don't sum to 1.0 or contain invalid keys.
         """
         self._eda = eda_results
         self._df_len = df_len
         self.scores = {}
+        
+        # Set weights with validation
+        if weights is None:
+            self._weights = self.DEFAULT_WEIGHTS.copy()
+        else:
+            self._validate_weights(weights)
+            self._weights = weights.copy()
+
+    def _validate_weights(self, weights):
+        """
+        Validate that custom weights are properly formatted.
+
+        Args:
+            weights (dict): User-provided weights dictionary.
+
+        Raises:
+            ValueError: If weights are invalid.
+        """
+        required_keys = set(self.DEFAULT_WEIGHTS.keys())
+        provided_keys = set(weights.keys())
+        
+        # Check for missing or extra keys
+        if provided_keys != required_keys:
+            missing = required_keys - provided_keys
+            extra = provided_keys - required_keys
+            error_msg = []
+            if missing:
+                error_msg.append(f"Missing keys: {missing}")
+            if extra:
+                error_msg.append(f"Extra keys: {extra}")
+            raise ValueError(
+                f"Invalid weight keys. {' '.join(error_msg)}. "
+                f"Required keys: {required_keys}"
+            )
+        
+        # Check if weights sum to 1.0 (with small tolerance for floating point)
+        weight_sum = sum(weights.values())
+        if not (0.99 <= weight_sum <= 1.01):
+            raise ValueError(
+                f"Weights must sum to 1.0, but got {weight_sum:.4f}. "
+                f"Provided weights: {weights}"
+            )
+        
+        # Check if all weights are non-negative
+        if any(w < 0 for w in weights.values()):
+            raise ValueError("All weights must be non-negative.")
+
+    def get_weights(self):
+        """
+        Get the current weights being used for scoring.
+
+        Returns:
+            dict: Copy of current weights dictionary.
+        """
+        return self._weights.copy()
+
+    def set_weights(self, weights):
+        """
+        Update the weights used for overall score calculation.
+
+        Args:
+            weights (dict): New weights dictionary.
+
+        Raises:
+            ValueError: If weights are invalid.
+        """
+        self._validate_weights(weights)
+        self._weights = weights.copy()
+        
+        # Recalculate overall score if it was already computed
+        if 'overall' in self.scores:
+            self.overall_score()
 
     def missing_score(self):
         """
@@ -85,7 +172,9 @@ class QualityScorer:
 
     def overall_score(self):
         """
-        Compute a weighted overall data quality score using:
+        Compute a weighted overall data quality score using configured weights.
+
+        Default weights:
             - Missing score (35%)
             - Duplicate score (15%)
             - Outlier score (25%)
@@ -101,12 +190,9 @@ class QualityScorer:
             if metric not in self.scores:
                 getattr(self, f"{metric}_score")()
 
-        weights = {
-            'missing': 0.35,
-            'duplicates': 0.15,
-            'outliers': 0.25,
-            'balance': 0.25
-        }
-
-        self.scores['overall'] = sum(self.scores[m] * w for m, w in weights.items())
+        # Calculate weighted overall score using current weights
+        self.scores['overall'] = sum(
+            self.scores[m] * self._weights[m] 
+            for m in self._weights.keys()
+        )
         return self.scores['overall']
