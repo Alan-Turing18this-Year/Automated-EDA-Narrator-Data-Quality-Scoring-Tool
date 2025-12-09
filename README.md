@@ -18,7 +18,7 @@ The project demonstrates **object-oriented programming (OOP)** concepts includin
 
 ---
 
-## 📦 Features
+##  Features
 
 ### Automated EDA
 - Statistical profiling (mean, std, quartiles)
@@ -34,8 +34,8 @@ The project demonstrates **object-oriented programming (OOP)** concepts includin
 | Outlier Score   | detected outliers vs N   | 25%    |
 | Balance Score   | categorical distribution | 25%    |
 - Missing values, duplicates, outliers, balance score
--  💯 Final weighted score (0–100)
--  🔎 Quality verdict: Excellent / Good / Fair / Poor
+-   Final weighted score (0–100)
+-   Quality verdict: Excellent / Good / Fair / Poor
 
 ### Natural-Language Narration
 - Generates explanation of dataset shape, variability, missing values, outliers & verdict
