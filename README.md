@@ -9,34 +9,33 @@ The project demonstrates **object-oriented programming (OOP)** concepts includin
 
 ---
 
-## Team Members
-| Member | Role |
-|--------|------|
-| Mark Orano | DataLoader + Preprocessor |
-| Jomar Ligas | NumericAnalyzer + CategoricalAnalyzer (EDA) |
-| Lex Leander Lumantas | QualityScorer |
-| Philip Andree Tupas | Narrator |
-| Josh Ganhinhin | DatasetPipeline + ReportBuilder + Integration |
-
----
-
 ## Features
 
 ### Automated EDA
-- Numeric analysis: mean, std, quartiles, outliers
-- Categorical analysis: value counts, top categories
-- Missing value and duplicate detection
-- Correlation matrix for numeric columns
+- Statistical profiling (mean, std, quartiles)
+- Categorical profiling (frequency distribution, unique ratio)
+- Outlier detection summary
+- Missing value analysis per feature
 
-### Data Quality Scoring
+### Data Quality Intelligence
+| Metric          | Basis                    | Weight |
+| --------------- | ------------------------ | ------ |
+| Missing Score   | % missing values         | 35%    |
+| Duplicate Score | duplicate row %          | 15%    |
+| Outlier Score   | detected outliers vs N   | 25%    |
+| Balance Score   | categorical distribution | 25%    |
 - Missing values, duplicates, outliers, balance score
-- Weighted overall score (0–100)
-- Simple verdict: Excellent / Good / Fair / Poor
+- Final weighted score (0–100)
+- Quality verdict: Excellent / Good / Fair / Poor
 
-### Report Generation
-- Narrative insights in human-readable sentences
-- Markdown-formatted quality report
-- Optional JSON output
+### Natural-Language Narration
+- Generates explanation of dataset shape, variability, missing values, outliers & verdict
+- Converts analysis metrics into human-readable insights
+
+### Automated Report Generation
+- Markdown export (.md)
+- CLI configurable output
+- Integrates narratives + scores + stats into a clean report
 
 ---
 
