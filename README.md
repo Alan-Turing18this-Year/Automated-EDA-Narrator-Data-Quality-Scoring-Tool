@@ -1,4 +1,4 @@
-![DatasetSense Logo](pics/Datasetsense_logo.png)
+![DatasetSense Logo](pics/Datasetsense_logo_(resized).png)
 
 # Automated-EDA-Narrator-Data-Quality-Scoring-Tool
 # DatasetSense: Automated EDA Narrator + Data Quality Scoring Tool
