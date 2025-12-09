@@ -13,7 +13,7 @@ from dateutil import parser
 
 class Preprocessor:
     """
-    Class for preprocessing a pandas DataFrame.
+    A class for preprocessing a pandas DataFrame by cleaning and transforming data.
 
     Attributes:
         _df (pd.DataFrame): A protected copy of the DataFrame to preprocess.
@@ -26,14 +26,14 @@ class Preprocessor:
         Args:
             df (pd.DataFrame): The input DataFrame to preprocess.
         """
-        self._df = df.copy()          # protected
+        self._df = df.copy()
 
     def trim_strings(self, cols):
         """
-        Remove leading and trailing whitespace from selected string columns.
+        Trim leading and trailing whitespace from specified string columns.
 
         Args:
-            cols (list): List of column names whose string values will be trimmed.
+            cols (list): List of column names to trim.
 
         Returns:
             Preprocessor: Returns self to allow method chaining.
@@ -45,7 +45,7 @@ class Preprocessor:
 
     def parse_dates(self, cols):
         """
-        Convert specified columns into datetime objects using dateutil parser.
+        Convert columns to datetime objects.
 
         Args:
             cols (list): List of column names to convert to datetime.
@@ -56,7 +56,7 @@ class Preprocessor:
         for c in cols:
             if c in self._df:
                 self._df[c] = self._df[c].apply(
-                    lambda x: parser.parse(x) if x and isinstance(x, str) else x
+                    lambda x: parser.parse(x) if isinstance(x, str) else x
                 )
         return self
 
@@ -65,7 +65,6 @@ class Preprocessor:
         Retrieve the processed DataFrame.
 
         Returns:
-            pd.DataFrame: The cleaned and transformed DataFrame.
+            pd.DataFrame: The cleaned DataFrame.
         """
         return self._df
-
