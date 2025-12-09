@@ -45,7 +45,24 @@ The project demonstrates **object-oriented programming (OOP)** concepts includin
 - Markdown export (.md)
 - CLI configurable output
 - Integrates narratives + scores + stats into a clean report
+  
+---
+## Installation
 
+Clone the Repository
+```bash
+git clone https://github.com/LexusMaximus/Automated-EDA-Narrator-Data-Quality-Scoring-Tool.git
+cd Automated-EDA-Narrator-Data-Quality-Scoring-Tool
+```
+Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+If installing manually:
+
+```bash
+pip install pandas>=1.5 numpy scipy tabulate python-dateutil
+```
 ---
 
 ## System Architecture (UML)
@@ -103,7 +120,7 @@ data-narrator/
 | **Must be importable and reusable**          | All modules are in `src/` with proper `__init__.py`, allowing imports like: <br>`from src.loader import DataLoader`                                                                                                                                                                                         |
 ---
 
-## Usage
+## Usage & Testing
 
 Run on Any CSV (Python Script)
 
@@ -148,31 +165,6 @@ pipeline = DatasetPipeline("Automated-EDA-Narrator-Data-Quality-Scoring-Tool/dat
 report = pipeline.run()
 print(report)
 ```
-```markdown
-# Automated EDA Report
-
-## Narrative Insights
-- Column 'id' has mean 3.71 and standard deviation 1.80.
-- Column 'age' has mean 59.00 and standard deviation 69.56.
-- Column 'salary' has mean 194571.29 and standard deviation 356233.09.
-- Column 'age' has 1 missing values (14.29%).
-- Column 'age' contains 1 detected outliers.
-- Column 'salary' contains 1 detected outliers.
-- Overall data quality: 81.67/100 - Good.
-
-## Quality Scores
-| Metric     |   Score |
-|------------|---------|
-| missing    | 97.61   |
-| duplicates | 71.43   |
-| outliers   | 57.14   |
-| balance    | 90      |
-| overall    | 81.67   |
-```
----
-
-## Testing
-
 Run entire test suite
 
 ```bash
