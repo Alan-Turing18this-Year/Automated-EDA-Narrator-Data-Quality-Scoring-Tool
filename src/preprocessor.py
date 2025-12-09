@@ -65,6 +65,6 @@ class Preprocessor:
         Retrieve the processed DataFrame.
 
         Returns:
-            pd.DataFrame: The cleaned DataFrame.
+            pd.DataFrame: The cleaned and transformed DataFrame.
         """
         return self._df
