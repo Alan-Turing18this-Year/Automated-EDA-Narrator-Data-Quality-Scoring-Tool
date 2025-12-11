@@ -16,14 +16,14 @@
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Project Overview
+## 1. Project Overview
 DatasetSense is a Python tool that performs **automated exploratory data analysis (EDA)** and computes a **dataset quality score (0–100)**. It generates **human-readable insights** and produces a **markdown report** summarizing dataset characteristics and quality.  
 
 The project demonstrates **object-oriented programming (OOP)** concepts including **encapsulation, inheritance, polymorphism, composition, and dunder methods**.
 
 ---
 
-## Features
+## 2. Features
 
 ### Automated EDA
 - Statistical profiling (mean, std, quartiles)
@@ -55,7 +55,7 @@ The project demonstrates **object-oriented programming (OOP)** concepts includin
   
 ---
 
-## Installation
+## 3. Installation
 
 ### Option 1: Install from PyPI (Recommended)
 
@@ -94,7 +94,7 @@ pip install pandas>=1.5 numpy scipy tabulate python-dateutil
 
 ---
 
-## Quick Start
+## 4. Quick Start
 
 ### Basic Usage (PyPI Installation)
 
@@ -140,7 +140,7 @@ python -m src.cli data/sample.csv --weights '{"missing":0.5,"duplicates":0.1,"ou
 
 ---
 
-## Usage Examples
+## 5. Usage Examples
 
 ### Example 1: Default Weights
 
@@ -251,7 +251,7 @@ except ValueError as e:
 
 ---
 
-## System Architecture (UML)
+## 6. System Architecture (UML)
 
 ![Dataset UML](pics/dataset_uml.png)
 
@@ -261,7 +261,7 @@ The UML expresses class collaboration via composition:
 
 ---
 
-## Object-Oriented Design
+## 7. Object-Oriented Design
 
 | OOP Concept        | How it's applied in DatasetSense                                                                                                                                                                             |
 |--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -274,7 +274,7 @@ The UML expresses class collaboration via composition:
 
 ---
 
-## Project Structure
+## 8. Project Structure
 
 ```
 datasetsense/
@@ -300,7 +300,7 @@ datasetsense/
 
 ---
 
-## Custom Weights Guide
+## 9. Custom Weights Guide
 
 ### Default Weights (35/15/25/25)
 The default weights prioritize missing values (35%) because:
@@ -335,7 +335,7 @@ This approach is ideal when you have no domain-specific knowledge or want unbias
 
 ---
 
-## Testing
+## 10. Testing
 
 Run the test suite (if available):
 
