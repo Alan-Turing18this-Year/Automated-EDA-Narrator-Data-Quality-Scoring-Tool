@@ -23,7 +23,7 @@ The project demonstrates **object-oriented programming (OOP)** concepts includin
 
 ---
 
-## 🚀 Features
+## Features
 
 ### Automated EDA
 - Statistical profiling (mean, std, quartiles)
@@ -55,7 +55,7 @@ The project demonstrates **object-oriented programming (OOP)** concepts includin
   
 ---
 
-## 📦 Installation
+## Installation
 
 ### Option 1: Install from PyPI (Recommended)
 
@@ -94,7 +94,7 @@ pip install pandas>=1.5 numpy scipy tabulate python-dateutil
 
 ---
 
-## 🎯 Quick Start
+## Quick Start
 
 ### Basic Usage (PyPI Installation)
 
@@ -140,7 +140,7 @@ python -m src.cli data/sample.csv --weights '{"missing":0.5,"duplicates":0.1,"ou
 
 ---
 
-## 💻 Usage Examples
+## Usage Examples
 
 ### Example 1: Default Weights
 
@@ -251,7 +251,7 @@ except ValueError as e:
 
 ---
 
-## 🏗️ System Architecture (UML)
+## System Architecture (UML)
 
 ![Dataset UML](pics/dataset_uml.png)
 
@@ -261,7 +261,7 @@ The UML expresses class collaboration via composition:
 
 ---
 
-## 🎓 Object-Oriented Design
+## Object-Oriented Design
 
 | OOP Concept        | How it's applied in DatasetSense                                                                                                                                                                             |
 |--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -274,7 +274,7 @@ The UML expresses class collaboration via composition:
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 datasetsense/
@@ -300,7 +300,7 @@ datasetsense/
 
 ---
 
-## 🔧 Custom Weights Guide
+## Custom Weights Guide
 
 ### Default Weights (35/15/25/25)
 The default weights prioritize missing values (35%) because:
@@ -335,7 +335,7 @@ This approach is ideal when you have no domain-specific knowledge or want unbias
 
 ---
 
-## 🧪 Testing
+## Testing
 
 Run the test suite (if available):
 
@@ -351,7 +351,7 @@ python demo.py
 
 ---
 
-## 📊 Sample Output
+## Sample Output
 
 ```markdown
 # Automated EDA Report
@@ -387,7 +387,7 @@ The overall quality score is calculated using the following weights:
 
 ---
 
-## 🔗 Links
+## Links
 
 - **PyPI Package**: [https://pypi.org/project/datasetsense/](https://pypi.org/project/datasetsense/)
 - **GitHub Repository**: [https://github.com/LexusMaximus/Automated-EDA-Narrator-Data-Quality-Scoring-Tool](https://github.com/LexusMaximus/Automated-EDA-Narrator-Data-Quality-Scoring-Tool)
@@ -395,7 +395,7 @@ The overall quality score is calculated using the following weights:
 
 ---
 
-## 📝 Requirements
+## Requirements
 
 | Requirement                                  | Project Implementation                                                                                                                                                                                                                                                                                      |
 |----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -405,13 +405,13 @@ The overall quality score is calculated using the following weights:
 
 ---
 
-## 📄 License
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-## 👥 Authors
+## Authors
 
 - **Mark Oraño**
 - **Jomar Ligas**
