@@ -210,7 +210,11 @@ comparison_df = pd.DataFrame(results)
 print(comparison_df.to_string(index=False))
 ```
 
-### Example 3: Google Colab / Jupyter Notebook
+### Example 3: Google Colab / Jupyter Notebook (PyPI Version)
+
+This is the quickest way to test the package using the stable PyPI release.
+
+**Note:** The linked [Demo Notebook](#-links) uses the `git clone` method to demonstrate the latest development features directly from the repository.
 
 ```python
 # Install from PyPI
@@ -305,6 +309,13 @@ The default weights prioritize missing values (35%) because:
 - Most ML models can't handle missing values
 - It's harder to fix than duplicates
 
+### Equal Weights Strategy
+If you wish to treat all metrics equally without prioritizing any particular aspect, use:
+```python
+{'missing': 0.25, 'duplicates': 0.25, 'outliers': 0.25, 'balance': 0.25}
+```
+This approach is ideal when you have no domain-specific knowledge or want unbiased scoring across all quality dimensions.
+
 ### Weight Customization Rules
 1. **All four metrics must be specified**: `missing`, `duplicates`, `outliers`, `balance`
 2. **Weights must sum to 1.0** (100%)
@@ -391,12 +402,6 @@ The overall quality score is calculated using the following weights:
 | **At least 5 useful methods across modules** | Example methods: <br>1. `DataLoader.load()` – loads CSV <br>2. `Preprocessor.trim_strings()` – trims text columns <br>3. `NumericAnalyzer.run_all()` – numeric summary <br>4. `QualityScorer.overall_score()` – calculates weighted quality <br>5. `Narrator.generate()` – returns human-readable narrative |
 | **Must be importable and reusable**          | All modules are in `src/` with proper `__init__.py`, allowing imports like: <br>`from src.orchestrator import DatasetPipeline`                                                                                                                                                                              |
 | **Published on PyPI**                        | Package available at: [https://pypi.org/project/datasetsense/](https://pypi.org/project/datasetsense/)                                                                                                                                                                                                      |
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
